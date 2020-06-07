@@ -1,5 +1,6 @@
 import React from "react";
-import { RigaTimbratura } from "../moleculas/RigaTimbratura";
+import RigaTimbratura from "../moleculas/RigaTimbratura";
+import axios from "axios";
 
 class ElencoTimbrature extends React.Component {
   constructor(props) {
@@ -10,33 +11,26 @@ class ElencoTimbrature extends React.Component {
   }
 
   componentDidMount() {
-    console.log("component did mount");
     this.caricaElencoTimbrature();
   }
 
   caricaElencoTimbrature = async () => {
-    console.log("Procedo con il caricamento delle timbrature");
-    const timbrature = await fetch("http://localhost:5000/timbratura");
-    this.setState({
-      elencoTimbrature: () => timbrature.json(),
-    });
+    await axios
+      .get("http://localhost:5000/timbratura")
+      .then((timbrature) => timbrature.data)
+      .then((timbrature) => {
+        this.setState({ elencoTimbrature: timbrature });
+      });
   };
 
   mostraElencoTimbrature = () => {
-    let elencoTimbrature = this.state.elencoTimbrature;
-    console.log("elenco delle timbrature:", elencoTimbrature);
-    return Array.from(elencoTimbrature).map((timbratura) => {
-      console.log(timbratura, timbratura.uscita);
-      return <RigaTimbratura id={timbratura._id} />;
+    return Array.from(this.state.elencoTimbrature).map((timbratura) => {
+      return <RigaTimbratura key={timbratura.id} timbratura={timbratura} />;
     });
   };
 
   render() {
-    return (
-      <>
-        {this.mostraElencoTimbrature()}
-      </>
-    );
+    return <>{this.mostraElencoTimbrature()}</>;
   }
 }
 
