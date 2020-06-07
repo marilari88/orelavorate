@@ -12,7 +12,9 @@ function Layout({ children }) {
           </ul>
         </nav>
         <main>{children}</main>
-        <footer></footer>
+        <footer>
+           
+        </footer>
       </div>
     </>
   )
