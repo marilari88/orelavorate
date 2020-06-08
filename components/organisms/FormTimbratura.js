@@ -91,12 +91,13 @@ class FormTimbratura extends React.Component {
   };
 
   salvaTimbratura = async () => {
-    const options = {
+  /*   const options = {
       url: "http://localhost:5000/timbratura",
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json;charset=UTF-8",
+        "Access-Control-Allow-Origin": "*",
       },
       data: {
         ingresso: this.state.ingresso,
@@ -111,7 +112,7 @@ class FormTimbratura extends React.Component {
       })
       .catch(function (error) {
         console.log(error);
-      });
+      }); */
 
     if (!this.state.id) {
       console.log("Provo ad inviare i dati della timbratura al backend");
@@ -123,11 +124,16 @@ class FormTimbratura extends React.Component {
             uscita: this.state.uscita,
             differenza: this.state.differenza,
           },
-          { headers: { "Content-Type": "application/json" } }
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*",
+            },
+          }
         );
         console.log(response);
       } catch (error) {
-        console.log(JSON.stringify(error));
+        console.error(JSON.stringify(error));
       }
     }
   };
