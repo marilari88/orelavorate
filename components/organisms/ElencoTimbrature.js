@@ -16,7 +16,7 @@ class ElencoTimbrature extends React.Component {
 
   caricaElencoTimbrature = async () => {
     await axios
-      .get("http://localhost:5000/timbratura")
+      .get(process.env.NEXT_PUBLIC_API_URL + "/timbratura")
       .then((timbrature) => timbrature.data)
       .then((timbrature) => {
         this.setState({ elencoTimbrature: timbrature });

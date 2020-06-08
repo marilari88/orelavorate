@@ -1,4 +1,5 @@
 import React from "react";
+import { stringaTempo } from "../../utils/differenzaorario";
 
 class RigaTimbratura extends React.Component {
   constructor(props) {
@@ -9,13 +10,15 @@ class RigaTimbratura extends React.Component {
     return (
       <div>
         <div className="ingresso">
-          Ingresso alle {this.props.timbratura.ingresso}
+          Ingresso alle{" "}
+          {new Date(this.props.timbratura.ingresso).toLocaleString()}
         </div>
         <div className="uscita">
-          Uscita alle {this.props.timbratura.uscita}
+          Uscita alle{" "}
+          {new Date(this.props.timbratura.uscita).toLocaleString()}
         </div>
         <div className="differenza">
-          Hai lavorato {this.props.timbratura.differenza} ore
+          Hai lavorato {stringaTempo(this.props.timbratura.differenza)}
         </div>
       </div>
     );

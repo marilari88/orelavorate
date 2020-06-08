@@ -82,7 +82,6 @@ class FormTimbratura extends React.Component {
   };
 
   calcoloDifferenza = () => {
-    console.log(this.state.uscita, "uscita");
     const secondiDifferenza = calcoloSecondi(
       this.state.ingresso,
       this.state.uscita
@@ -91,34 +90,10 @@ class FormTimbratura extends React.Component {
   };
 
   salvaTimbratura = async () => {
-  /*   const options = {
-      url: "http://localhost:5000/timbratura",
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json;charset=UTF-8",
-        "Access-Control-Allow-Origin": "*",
-      },
-      data: {
-        ingresso: this.state.ingresso,
-        uscita: this.state.uscita,
-        differenza: this.state.differenza,
-      },
-    };
-
-    axios(options)
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      }); */
-
     if (!this.state.id) {
-      console.log("Provo ad inviare i dati della timbratura al backend");
       try {
         const response = await axios.post(
-          "http://localhost:5000/timbratura",
+          process.env.NEXT_PUBLIC_API_URL + "/timbratura",
           {
             ingresso: this.state.ingresso,
             uscita: this.state.uscita,
@@ -131,7 +106,6 @@ class FormTimbratura extends React.Component {
             },
           }
         );
-        console.log(response);
       } catch (error) {
         console.error(JSON.stringify(error));
       }
