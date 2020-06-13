@@ -27,7 +27,6 @@ class ElencoTimbrature extends React.Component {
   };
 
   mostraElencoTimbrature = () => {
-    console.log(this.state.elencoTimbrature);
     return Array.from(this.state.elencoTimbrature).map((timbratura) => {
       return <RigaTimbratura key={timbratura.id} timbratura={timbratura} />;
     });

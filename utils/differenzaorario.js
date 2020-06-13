@@ -6,8 +6,8 @@ export const calcoloSecondi = (date1, date2) => {
 };
 
 export const stringaTempo = (tempoInSecondi) => {
-  const ore = Math.abs(Math.round(tempoInSecondi / (60 * 60)));
-  const minuti = Math.abs(Math.round((tempoInSecondi - ore * 60 * 60) / 60));
+  const ore = Math.abs(Math.floor(tempoInSecondi / (60 * 60)));
+  const minuti = Math.abs(Math.floor((tempoInSecondi - ore * 60 * 60) / 60));
   const secondi = Math.abs(tempoInSecondi - minuti * 60 - ore * 60 * 60);
 
   let stringaTempo = `

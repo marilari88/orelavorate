@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "eslint": "^7.2.0",
     "next": "^9.4.4",
     "npm-check-updates": "^6.0.1",
     "react": "16.13.1",

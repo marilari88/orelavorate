@@ -3,9 +3,10 @@ import { stringaTempo, calcoloSecondi } from "../../utils/differenzaorario";
 import axios from "axios";
 
 class FormTimbratura extends React.Component {
+  idIntervallo="";
   constructor(props) {
     super(props);
-    this.state = { id: "", ingresso: "", uscita: "", differenza: "" };
+    this.state = { id: "", ingresso: "", uscita: "", differenza: 0 };
   }
 
   componentDidMount() {
@@ -15,6 +16,10 @@ class FormTimbratura extends React.Component {
       uscita: props.uscita,
       differenza: props.differenza,
     }));
+  }
+
+  componetWillUnmount() {
+    clearInterval(this.idIntervallo);
   }
 
   render() {
@@ -42,6 +47,7 @@ class FormTimbratura extends React.Component {
       <>
         <div className="rigaInserimento">
           <div>Sei entrato alle {this.state.ingresso.toLocaleString()}</div>
+          <div>Stai lavorando da {stringaTempo(this.state.differenza)}</div>
           <button onClick={this.inserisciUscita}>Inserisci Uscita</button>
         </div>
       </>
@@ -68,6 +74,9 @@ class FormTimbratura extends React.Component {
   inserisciEntrata = () => {
     let dataAttuale = new Date();
     this.setState({ ingresso: dataAttuale });
+    this.idIntervallo = setInterval(() => {
+      this.calcoloDifferenza(this.state.ingresso, new Date());
+    }, 1000);
   };
 
   inserisciUscita = async () => {
@@ -79,13 +88,14 @@ class FormTimbratura extends React.Component {
   aggiornaUscita = () => {
     let dataAttuale = new Date();
     this.setState({ uscita: dataAttuale });
+    clearInterval(this.idIntervallo);
   };
 
-  calcoloDifferenza = () => {
-    const secondiDifferenza = calcoloSecondi(
-      this.state.ingresso,
-      this.state.uscita
-    );
+  calcoloDifferenza = (
+    ingresso = this.state.ingresso,
+    uscita = this.state.uscita
+  ) => {
+    const secondiDifferenza = calcoloSecondi(ingresso, uscita);
     this.setState({ differenza: secondiDifferenza });
   };
 
