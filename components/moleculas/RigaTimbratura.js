@@ -7,9 +7,6 @@ class RigaTimbratura extends React.Component {
     super(props);
   }
 
-  cancellaTimbratura() {
-  }
-
   render() {
     return (
       <div>
@@ -25,7 +22,7 @@ class RigaTimbratura extends React.Component {
         </div>
         <button
           className="cancellaTimbratura"
-          onClick={this.cancellaTimbratura}
+          onClick={() => this.props.cancellaTimbratura()}
         >
           Cancella
         </button>
@@ -35,6 +32,7 @@ class RigaTimbratura extends React.Component {
 }
 RigaTimbratura.propTypes = {
   timbratura: PropTypes.object.isRequired,
+  cancellaTimbratura: PropTypes.func,
 };
 
 export default RigaTimbratura;

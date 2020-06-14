@@ -15,23 +15,52 @@ class ElencoTimbrature extends React.Component {
     this.caricaElencoTimbrature();
   }
 
-  
   async caricaElencoTimbrature() {
     await axios
       .get(process.env.NEXT_PUBLIC_API_URL + "/timbratura")
       .then((timbrature) => {
+        if (timbrature.data.elenco)
+          this.setState({
+            elencoTimbrature: timbrature.data.elenco,
+          });
+      })
+      .finally(
         this.setState({
-          elencoTimbrature: timbrature.data.elenco,
           caricamento: false,
-        });
-      });
-  };
+        })
+      );
+  }
 
   mostraElencoTimbrature() {
     return Array.from(this.state.elencoTimbrature).map((timbratura) => {
-      return <RigaTimbratura key={timbratura.id} timbratura={timbratura} />;
+      return (
+        <RigaTimbratura
+          key={timbratura.id}
+          timbratura={timbratura}
+          cancellaTimbratura={this.cancellaTimbratura.bind(this, timbratura.id)}
+        />
+      );
     });
-  };
+  }
+
+  async cancellaTimbratura(id) {
+    const response = await axios.delete(
+      process.env.NEXT_PUBLIC_API_URL + "/timbratura/" + id
+    );
+    if (response.status == 200) {
+      alert(`Cancellazione avvenuta con successo`);
+
+      let nuovoElencoTimbrature = [...this.state.elencoTimbrature];
+      const timbraturaIndex = this.state.elencoTimbrature.findIndex(
+        (timbratura) => timbratura.id == id
+      );
+      nuovoElencoTimbrature.splice(timbraturaIndex, 1);
+
+      this.setState({
+        elencoTimbrature: nuovoElencoTimbrature,
+      });
+    }
+  }
 
   render() {
     return (

@@ -65,7 +65,6 @@ class FormTimbratura extends React.Component {
           <div>
             Hai lavorato per un totale di {stringaTempo(this.state.differenza)}
           </div>
-          {/* <button>Inizia un nuovo turno di lavoro</button> */}
         </div>
       </>
     );

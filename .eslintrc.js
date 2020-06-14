@@ -13,10 +13,13 @@ module.exports = {
     sourceType: "module",
   },
   plugins: ["react"],
-  rules: {},
+  rules: {
+    "no-console": "off",
+  },
   settings: {
     react: {
       version: "detect",
     },
   },
+  "parser": "babel-eslint",
 };
