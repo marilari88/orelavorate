@@ -15,7 +15,8 @@ class ElencoTimbrature extends React.Component {
     this.caricaElencoTimbrature();
   }
 
-  caricaElencoTimbrature = async () => {
+  
+  async caricaElencoTimbrature() {
     await axios
       .get(process.env.NEXT_PUBLIC_API_URL + "/timbratura")
       .then((timbrature) => {
@@ -26,7 +27,7 @@ class ElencoTimbrature extends React.Component {
       });
   };
 
-  mostraElencoTimbrature = () => {
+  mostraElencoTimbrature() {
     return Array.from(this.state.elencoTimbrature).map((timbratura) => {
       return <RigaTimbratura key={timbratura.id} timbratura={timbratura} />;
     });

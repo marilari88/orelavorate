@@ -1,5 +1,7 @@
 import Link from "next/link";
 import FormTimbratura from "../components/organisms/FormTimbratura";
+import React from "react";
+
 export default function Timbratura() {
   return (
     <div className="formInserimentoTimbratura">
@@ -7,7 +9,7 @@ export default function Timbratura() {
       <FormTimbratura />
       <br />
       <Link href="index">
-        <a>Ritorna all'elenco delle timbrature</a>
+        <a>Ritorna all&apos;elenco delle timbrature</a>
       </Link>
     </div>
   );

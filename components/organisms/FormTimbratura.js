@@ -3,10 +3,10 @@ import { stringaTempo, calcoloSecondi } from "../../utils/differenzaorario";
 import axios from "axios";
 
 class FormTimbratura extends React.Component {
-  idIntervallo="";
   constructor(props) {
     super(props);
     this.state = { id: "", ingresso: "", uscita: "", differenza: 0 };
+    this.idIntervallo = "";
   }
 
   componentDidMount() {
@@ -22,15 +22,7 @@ class FormTimbratura extends React.Component {
     clearInterval(this.idIntervallo);
   }
 
-  render() {
-    return !this.state.ingresso
-      ? this.mostraIngressoDaInserire()
-      : !this.state.uscita
-      ? this.mostraUscitaDaInserire()
-      : this.mostraDatiCompleti();
-  }
-
-  mostraIngressoDaInserire = () => {
+  mostraIngressoDaInserire() {
     return (
       <>
         <div className="rigaInserimento">
@@ -40,9 +32,17 @@ class FormTimbratura extends React.Component {
         </div>
       </>
     );
-  };
+  }
 
-  mostraUscitaDaInserire = () => {
+  render() {
+    return !this.state.ingresso
+      ? this.mostraIngressoDaInserire()
+      : !this.state.uscita
+      ? this.mostraUscitaDaInserire()
+      : this.mostraDatiCompleti();
+  }
+
+  mostraUscitaDaInserire() {
     return (
       <>
         <div className="rigaInserimento">
@@ -52,9 +52,9 @@ class FormTimbratura extends React.Component {
         </div>
       </>
     );
-  };
+  }
 
-  mostraDatiCompleti = () => {
+  mostraDatiCompleti() {
     return (
       <>
         <div className="rigaInserimento">
@@ -69,37 +69,37 @@ class FormTimbratura extends React.Component {
         </div>
       </>
     );
-  };
+  }
 
-  inserisciEntrata = () => {
+  inserisciEntrata() {
     let dataAttuale = new Date();
     this.setState({ ingresso: dataAttuale });
     this.idIntervallo = setInterval(() => {
       this.calcoloDifferenza(this.state.ingresso, new Date());
     }, 1000);
-  };
+  }
 
-  inserisciUscita = async () => {
+  async inserisciUscita() {
     await this.aggiornaUscita();
     this.calcoloDifferenza();
     this.salvaTimbratura();
-  };
+  }
 
-  aggiornaUscita = () => {
+  aggiornaUscita() {
     let dataAttuale = new Date();
     this.setState({ uscita: dataAttuale });
     clearInterval(this.idIntervallo);
-  };
+  }
 
-  calcoloDifferenza = (
+  calcoloDifferenza(
     ingresso = this.state.ingresso,
     uscita = this.state.uscita
-  ) => {
+  ) {
     const secondiDifferenza = calcoloSecondi(ingresso, uscita);
     this.setState({ differenza: secondiDifferenza });
-  };
+  }
 
-  salvaTimbratura = async () => {
+  async salvaTimbratura() {
     if (!this.state.id) {
       try {
         const response = await axios.post(
@@ -116,11 +116,12 @@ class FormTimbratura extends React.Component {
             },
           }
         );
+        console.log(response);
       } catch (error) {
         console.error(JSON.stringify(error));
       }
     }
-  };
+  }
 }
 
 export default FormTimbratura;

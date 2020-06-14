@@ -1,4 +1,6 @@
+import React from "react";
 import styles from "./layout.module.css";
+import PropTypes from "prop-types";
 
 function Layout({ children }) {
   return (
@@ -12,12 +14,14 @@ function Layout({ children }) {
           </ul>
         </nav>
         <main>{children}</main>
-        <footer>
-           
-        </footer>
+        <footer></footer>
       </div>
     </>
-  )
+  );
 }
+
+Layout.propTypes = {
+  children: PropTypes.object,
+};
 
 export default Layout;
