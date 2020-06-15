@@ -15,7 +15,7 @@ class ElencoTimbrature extends React.Component {
     this.caricaElencoTimbrature();
   }
 
-  async caricaElencoTimbrature() {
+  caricaElencoTimbrature = async () => {
     await axios
       .get(process.env.NEXT_PUBLIC_API_URL + "/timbratura")
       .then((timbrature) => {
@@ -29,9 +29,9 @@ class ElencoTimbrature extends React.Component {
           caricamento: false,
         })
       );
-  }
+  };
 
-  mostraElencoTimbrature() {
+  mostraElencoTimbrature = () => {
     return Array.from(this.state.elencoTimbrature).map((timbratura) => {
       return (
         <RigaTimbratura
@@ -41,9 +41,9 @@ class ElencoTimbrature extends React.Component {
         />
       );
     });
-  }
+  };
 
-  async cancellaTimbratura(id) {
+  cancellaTimbratura = async (id) => {
     const response = await axios.delete(
       process.env.NEXT_PUBLIC_API_URL + "/timbratura/" + id
     );
@@ -60,7 +60,7 @@ class ElencoTimbrature extends React.Component {
         elencoTimbrature: nuovoElencoTimbrature,
       });
     }
-  }
+  };
 
   render() {
     return (

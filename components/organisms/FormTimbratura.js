@@ -22,7 +22,7 @@ class FormTimbratura extends React.Component {
     clearInterval(this.idIntervallo);
   }
 
-  mostraIngressoDaInserire() {
+  mostraIngressoDaInserire = () => {
     return (
       <>
         <div className="rigaInserimento">
@@ -32,7 +32,7 @@ class FormTimbratura extends React.Component {
         </div>
       </>
     );
-  }
+  };
 
   render() {
     return !this.state.ingresso
@@ -42,7 +42,7 @@ class FormTimbratura extends React.Component {
       : this.mostraDatiCompleti();
   }
 
-  mostraUscitaDaInserire() {
+  mostraUscitaDaInserire = () => {
     return (
       <>
         <div className="rigaInserimento">
@@ -52,7 +52,7 @@ class FormTimbratura extends React.Component {
         </div>
       </>
     );
-  }
+  };
 
   mostraDatiCompleti = () => {
     return (
@@ -78,17 +78,17 @@ class FormTimbratura extends React.Component {
     }, 1000);
   };
 
-  async inserisciUscita() {
+  inserisciUscita = async () => {
     await this.aggiornaUscita();
     this.calcoloDifferenza();
     this.salvaTimbratura();
-  }
+  };
 
-  aggiornaUscita() {
+  aggiornaUscita = () => {
     let dataAttuale = new Date();
     this.setState({ uscita: dataAttuale });
     clearInterval(this.idIntervallo);
-  }
+  };
 
   calcoloDifferenza = (
     ingresso = this.state.ingresso,
@@ -98,7 +98,7 @@ class FormTimbratura extends React.Component {
     this.setState({ differenza: secondiDifferenza });
   };
 
-  async salvaTimbratura() {
+  salvaTimbratura = async () => {
     if (!this.state.id) {
       try {
         const response = await axios.post(
@@ -120,7 +120,7 @@ class FormTimbratura extends React.Component {
         console.error(JSON.stringify(error));
       }
     }
-  }
+  };
 }
 
 export default FormTimbratura;
