@@ -54,7 +54,7 @@ class FormTimbratura extends React.Component {
     );
   }
 
-  mostraDatiCompleti() {
+  mostraDatiCompleti = () => {
     return (
       <>
         <div className="rigaInserimento">
@@ -68,15 +68,15 @@ class FormTimbratura extends React.Component {
         </div>
       </>
     );
-  }
+  };
 
-  inserisciEntrata() {
+  inserisciEntrata = () => {
     let dataAttuale = new Date();
     this.setState({ ingresso: dataAttuale });
     this.idIntervallo = setInterval(() => {
       this.calcoloDifferenza(this.state.ingresso, new Date());
     }, 1000);
-  }
+  };
 
   async inserisciUscita() {
     await this.aggiornaUscita();
@@ -90,13 +90,13 @@ class FormTimbratura extends React.Component {
     clearInterval(this.idIntervallo);
   }
 
-  calcoloDifferenza(
+  calcoloDifferenza = (
     ingresso = this.state.ingresso,
     uscita = this.state.uscita
-  ) {
+  ) => {
     const secondiDifferenza = calcoloSecondi(ingresso, uscita);
     this.setState({ differenza: secondiDifferenza });
-  }
+  };
 
   async salvaTimbratura() {
     if (!this.state.id) {
