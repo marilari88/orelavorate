@@ -24,6 +24,7 @@ class ElencoTimbrature extends React.Component {
             elencoTimbrature: timbrature.data.elenco,
           });
       })
+      .catch((err) => console.log(err.message))
       .finally(
         this.setState({
           caricamento: false,
