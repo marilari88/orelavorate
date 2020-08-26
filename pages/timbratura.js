@@ -8,7 +8,7 @@ export default function Timbratura() {
       <div className="titolo">Inserimento Timbratura</div>
       <FormTimbratura />
       <br />
-      <Link href="index">
+      <Link href="/">
         <a>Ritorna all&apos;elenco delle timbrature</a>
       </Link>
     </div>

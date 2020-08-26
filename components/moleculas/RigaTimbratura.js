@@ -14,12 +14,18 @@ class RigaTimbratura extends React.Component {
           Ingresso alle{" "}
           {new Date(this.props.timbratura.ingresso).toLocaleString()}
         </div>
-        <div className="uscita">
-          Uscita alle {new Date(this.props.timbratura.uscita).toLocaleString()}
-        </div>
-        <div className="differenza">
-          Hai lavorato {stringaTempo(this.props.timbratura.differenza)}
-        </div>
+        {this.props.timbratura.uscita && (
+          <>
+            <div className="uscita">
+              Uscita alle{" "}
+              {new Date(this.props.timbratura.uscita).toLocaleString()}
+            </div>
+            <div className="differenza">
+              Hai lavorato {stringaTempo(this.props.timbratura.differenza)}
+            </div>
+          </>
+        )}
+
         <button
           className="cancellaTimbratura"
           onClick={() => this.props.cancellaTimbratura()}

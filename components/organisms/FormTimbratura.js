@@ -72,21 +72,19 @@ class FormTimbratura extends React.Component {
 
   inserisciEntrata = () => {
     let dataAttuale = new Date();
-    this.setState({ ingresso: dataAttuale });
+    this.setState({ ingresso: dataAttuale }, () => {
+      this.salvaTimbratura();
+    });
     this.idIntervallo = setInterval(() => {
       this.calcoloDifferenza(this.state.ingresso, new Date());
     }, 1000);
   };
 
-  inserisciUscita = async () => {
-    await this.aggiornaUscita();
-    this.calcoloDifferenza();
-    this.salvaTimbratura();
-  };
-
-  aggiornaUscita = () => {
+  inserisciUscita = () => {
     let dataAttuale = new Date();
-    this.setState({ uscita: dataAttuale });
+    this.setState({ uscita: dataAttuale }, () => {
+      this.salvaTimbratura();
+    });
     clearInterval(this.idIntervallo);
   };
 
@@ -100,8 +98,8 @@ class FormTimbratura extends React.Component {
 
   salvaTimbratura = async () => {
     if (!this.state.id) {
-      try {
-        const response = await axios.post(
+      await axios
+        .post(
           process.env.NEXT_PUBLIC_API_URL + "/timbratura",
           {
             ingresso: this.state.ingresso,
@@ -114,13 +112,30 @@ class FormTimbratura extends React.Component {
               "Access-Control-Allow-Origin": "*",
             },
           }
-        );
-        console.log(response);
-      } catch (error) {
-        console.error(JSON.stringify(error));
-      }
+        )
+        .then((res) => {
+          const idTimbratura=res.data.id.$oid;
+          this.setState({ id: idTimbratura });
+        })
+        .catch((error) => console.error(JSON.stringify(error)));
+    } else {
+      await axios
+        .put(
+          process.env.NEXT_PUBLIC_API_URL + "/timbratura/" + this.state.id,
+          {
+            ingresso: this.state.ingresso,
+            uscita: this.state.uscita,
+            differenza: this.state.differenza,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*",
+            },
+          }
+        )
+        .catch((error) => console.error(JSON.stringify(error)));
     }
   };
 }
-
 export default FormTimbratura;
