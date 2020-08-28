@@ -1,6 +1,7 @@
 import React from "react";
 import { stringaTempo } from "../../utils/differenzaorario";
 import PropTypes from "prop-types";
+import Link from "next/link";
 
 class RigaTimbratura extends React.Component {
   constructor(props) {
@@ -25,6 +26,13 @@ class RigaTimbratura extends React.Component {
             </div>
           </>
         )}
+
+        <Link
+          href="/timbratura/[idtimbratura]"
+          as={`/timbratura/${this.props.timbratura.id}`}
+        >
+          <button>Seleziona</button>
+        </Link>
 
         <button
           className="cancellaTimbratura"

@@ -1,6 +1,6 @@
 import React from "react";
 import RigaTimbratura from "../moleculas/RigaTimbratura";
-import axios from "axios";
+import TimbraturaService from "../../services/TimbraturaService";
 
 class ElencoTimbrature extends React.Component {
   constructor(props) {
@@ -16,8 +16,7 @@ class ElencoTimbrature extends React.Component {
   }
 
   caricaElencoTimbrature = async () => {
-    await axios
-      .get(process.env.NEXT_PUBLIC_API_URL + "/timbratura")
+    TimbraturaService.getAll()
       .then((timbrature) => {
         if (timbrature.data.elenco)
           this.setState({
@@ -45,12 +44,8 @@ class ElencoTimbrature extends React.Component {
   };
 
   cancellaTimbratura = async (id) => {
-    const response = await axios.delete(
-      process.env.NEXT_PUBLIC_API_URL + "/timbratura/" + id
-    );
-    if (response.status == 200) {
-      alert(`Cancellazione avvenuta con successo`);
-
+    TimbraturaService.delete(id).then((response) => {
+      if (response.status == 200) alert(`Cancellazione avvenuta con successo`);
       let nuovoElencoTimbrature = [...this.state.elencoTimbrature];
       const timbraturaIndex = this.state.elencoTimbrature.findIndex(
         (timbratura) => timbratura.id == id
@@ -60,7 +55,7 @@ class ElencoTimbrature extends React.Component {
       this.setState({
         elencoTimbrature: nuovoElencoTimbrature,
       });
-    }
+    });
   };
 
   render() {

@@ -1,25 +1,59 @@
 import React from "react";
 import { stringaTempo, calcoloSecondi } from "../../utils/differenzaorario";
-import axios from "axios";
+import TimbraturaService from "../../services/TimbraturaService";
+import PropTypes from "prop-types";
+import Link from "next/link";
 
 class FormTimbratura extends React.Component {
+  idIntervallo = "";
+
   constructor(props) {
     super(props);
-    this.state = { id: "", ingresso: "", uscita: "", differenza: 0 };
-    this.idIntervallo = "";
+    this.state = {
+      id: "",
+      ingresso: "",
+      uscita: "",
+      differenza: "",
+    };
   }
 
   componentDidMount() {
-    this.setState((props) => ({
-      id: props.id,
-      ingresso: props.ingresso,
-      uscita: props.uscita,
-      differenza: props.differenza,
-    }));
+    if (this.props.idTimbratura)
+      TimbraturaService.get(this.props.idTimbratura).then((response) => {
+        this.setState(
+          {
+            id: response.data._id.$oid,
+            ingresso: response.data.ingresso
+              ? new Date(response.data.ingresso)
+              : "",
+            uscita: response.data.uscita,
+            differenza: response.data.differenza,
+          },
+          () => {
+            if (this.state.ingresso && !this.state.uscita)
+              this.mostraTimerDifferenza();
+          }
+        );
+      });
   }
 
-  componetWillUnmount() {
+  componentWillUnmount() {
     clearInterval(this.idIntervallo);
+  }
+
+  render() {
+    return (
+      <>
+        {!this.state.ingresso
+          ? this.mostraIngressoDaInserire()
+          : !this.state.uscita
+          ? this.mostraUscitaDaInserire()
+          : this.mostraDatiCompleti()}
+        <Link href="/">
+          <a>Ritorna all&apos;elenco delle timbrature</a>
+        </Link>
+      </>
+    );
   }
 
   mostraIngressoDaInserire = () => {
@@ -34,13 +68,7 @@ class FormTimbratura extends React.Component {
     );
   };
 
-  render() {
-    return !this.state.ingresso
-      ? this.mostraIngressoDaInserire()
-      : !this.state.uscita
-      ? this.mostraUscitaDaInserire()
-      : this.mostraDatiCompleti();
-  }
+  
 
   mostraUscitaDaInserire = () => {
     return (
@@ -75,6 +103,10 @@ class FormTimbratura extends React.Component {
     this.setState({ ingresso: dataAttuale }, () => {
       this.salvaTimbratura();
     });
+    this.mostraTimerDifferenza();
+  };
+
+  mostraTimerDifferenza = () => {
     this.idIntervallo = setInterval(() => {
       this.calcoloDifferenza(this.state.ingresso, new Date());
     }, 1000);
@@ -98,44 +130,34 @@ class FormTimbratura extends React.Component {
 
   salvaTimbratura = async () => {
     if (!this.state.id) {
-      await axios
-        .post(
-          process.env.NEXT_PUBLIC_API_URL + "/timbratura",
-          {
-            ingresso: this.state.ingresso,
-            uscita: this.state.uscita,
-            differenza: this.state.differenza,
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              "Access-Control-Allow-Origin": "*",
-            },
-          }
-        )
-        .then((res) => {
-          const idTimbratura=res.data.id.$oid;
+      TimbraturaService.create({
+        ingresso: this.state.ingresso,
+        uscita: this.state.uscita,
+        differenza: this.state.differenza,
+      })
+        .then((response) => {
+          const idTimbratura = response.data.id.$oid;
           this.setState({ id: idTimbratura });
         })
         .catch((error) => console.error(JSON.stringify(error)));
     } else {
-      await axios
-        .put(
-          process.env.NEXT_PUBLIC_API_URL + "/timbratura/" + this.state.id,
-          {
-            ingresso: this.state.ingresso,
-            uscita: this.state.uscita,
-            differenza: this.state.differenza,
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              "Access-Control-Allow-Origin": "*",
-            },
-          }
-        )
+      TimbraturaService.update(this.state.id, {
+        ingresso: this.state.ingresso,
+        uscita: this.state.uscita,
+        differenza: this.state.differenza,
+      })
+        .then((response) => console.log(response.status))
         .catch((error) => console.error(JSON.stringify(error)));
     }
   };
 }
+
+FormTimbratura.propTypes = {
+  idTimbratura: PropTypes.string,
+};
+
+FormTimbratura.defaultProps = {
+  idTimbratura: "",
+};
+
 export default FormTimbratura;
